@@ -23,7 +23,7 @@ with open(BROCHURE_PATH, "r", encoding="utf-8") as file:
 
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-pro",  # or your teammate's preferred model
+    model="gemini-3.5-flash",  # or your teammate's preferred model
     temperature=0.3,
 )
 
