@@ -61,12 +61,12 @@ def calculate_confidence(state: AgentState):
     confidence = 0.95
 
     return {
-        "confidence": confidence
+        "confidence": round(confidence * 10)
     }
 
 
 def route_email(state: AgentState):
-    if state["confidence"] >= 0.8:
+    if state["confidence"] >= 7:
         return "email"
     return "human_review"
 
