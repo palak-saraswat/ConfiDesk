@@ -1,7 +1,7 @@
 from agents.gen_agent import run_gen_ai_agent
-from graph.state import State
+from graph.state import AgentState
 
-def ai_agent_node(state: State):
+def ai_agent_node(state: AgentState):
     """
     LangGraph node that pulls the customer email from the state,
     passes it to the Gemini agent, and updates the state with the result.
@@ -30,3 +30,6 @@ def send_whatsapp_node(state):
     )
 
     return {"status": "escalated"}
+
+def send_email_node(state: AgentState):
+    return {"status": "email_sent"}
