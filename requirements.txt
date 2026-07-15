@@ -1,5 +1,4 @@
 langgraph
-langchain-openai
-streamlit
+google-genai
 requests
 python-dotenv
