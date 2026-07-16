@@ -1,24 +1,11 @@
-from services.ai_agent import graph
+from agents.gen_agent import run_gen_ai_agent
 
-result = graph.invoke(
-    {
-        "customer_email": """
+email = """
 Hello,
 
-I am interested in your AI development services.
-Do you also build web applications and mobile apps?
+Can you tell me about your pricing plans?
+"""
 
-Regards,
-John
-""",
-        "brochure": "",
-        "draft_reply": "",
-        "confidence": 0.0,
-    }
-)
+result = run_gen_ai_agent(email)
 
-print("\nGenerated Reply:\n")
-print(result["draft_reply"])
-
-print("\nConfidence:")
-print(result["confidence"])
+print(result)
