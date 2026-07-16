@@ -12,7 +12,8 @@ def send_low_confidence_alert(customer_email: str, confidence_score: int, draft_
     alert to the helpdesk manager when AI confidence is below threshold.
     """
     if not WEBHOOK_URL:
-        raise ValueError("MAKE_WEBHOOK_URL not found in environment variables.")
+        print("[⚠️ send_whatsapp] WARNING: MAKE_WEBHOOK_URL missing from environment. Skipping WhatsApp alert.")
+        return False
 
     payload = {
         "customer_email": customer_email,
@@ -24,9 +25,10 @@ def send_low_confidence_alert(customer_email: str, confidence_score: int, draft_
     try:
         response = requests.post(WEBHOOK_URL, json=payload, timeout=10)
         response.raise_for_status()
+        print("[🚀 send_whatsapp] Alert sent successfully.")
         return True
     except requests.exceptions.RequestException as e:
-        print(f"[send_whatsapp] Failed to send alert: {e}")
+        print(f"[❌ send_whatsapp] Failed to send alert: {e}")
         return False
 
 
