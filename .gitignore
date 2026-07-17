@@ -1,1 +1,4 @@
 token.json
+
+venv/
+.mypy_cache/
