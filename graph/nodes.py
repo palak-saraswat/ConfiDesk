@@ -1,35 +1,49 @@
 from agents.gen_agent import run_gen_ai_agent
 from graph.state import AgentState
+from services.send_email import send_email_draft
+from services.send_whatsapp import send_low_confidence_alert
 
-def ai_agent_node(state: AgentState):
+
+def ai_agent_node(state: AgentState) -> dict:
     """
     LangGraph node that pulls the customer email from the state,
     passes it to the Gemini agent, and updates the state with the result.
     """
-    # 1. Get the input from the state
     customer_email = state.get("customer_email", "")
-    
-    # 2. Run the Gemini generation agent function
-    agent_output = run_gen_ai_agent(customer_email)
-    
-    # 3. Return the updates to merge into the workflow state
+
+    try:
+        agent_output = run_gen_ai_agent(customer_email)
+    except Exception as e:
+        # If the AI agent fails, treat it as low confidence and escalate
+        print(f"Gemini agent failed: {e}")
+        return {
+            "confidence_score": 0,
+            "draft_reply": "",
+            "status": "pending_review",
+        }
+
     return {
         "confidence_score": agent_output.get("confidence_score", 0),
         "draft_reply": agent_output.get("draft_reply", ""),
-        "status": agent_output.get("status", "needs_review")
+        "status": agent_output.get("status", "pending_review"),
     }
-    
-from services.send_whatsapp import send_low_confidence_alert
 
-def send_whatsapp_node(state):
+
+def send_whatsapp_node(state: AgentState) -> dict:
+    """Send a WhatsApp alert for low-confidence replies."""
     send_low_confidence_alert(
         customer_email=state.get("customer_email", ""),
         confidence_score=state.get("confidence_score", 0),
         draft_reply=state.get("draft_reply", ""),
-        status=state.get("status", "escalated")
+        status=state.get("status", "escalated"),
     )
-
     return {"status": "escalated"}
 
-def send_email_node(state: AgentState):
-    return {"status": "email_sent"}
+
+def send_email_node(state: AgentState) -> dict:
+    """Create a Gmail draft for high-confidence replies."""
+    send_email_draft(
+        customer_email=state.get("customer_email", ""),
+        draft_reply=state.get("draft_reply", ""),
+    )
+    return {"status": "pending_review"}   # draft waits for human approval
