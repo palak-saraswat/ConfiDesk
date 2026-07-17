@@ -1,4 +1,8 @@
-token.json
-
+﻿credentials.json
+# Ignore python virtual environment
 venv/
-.mypy_cache/
+.venv/
+
+# Ignore sensitive Google API keys and sessions
+credentials.json
+token.json
