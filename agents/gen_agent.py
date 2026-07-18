@@ -25,7 +25,7 @@ class SupportAgentResponse(BaseModel):
 
     status: str = Field(
         ...,
-        description="approved if confidence_score >= 7 else needs_review"
+        description="approved if confidence_score >= 7 else pending_review"
     )
 
 
@@ -54,7 +54,7 @@ Rules:
 4. If the context partially answers the email, assign confidence_score between 4 and 6.
 5. If the context cannot answer the email, assign confidence_score between 1 and 3.
 6. If confidence_score >= 7, status must be "approved".
-7. Otherwise, status must be "needs_review".
+7. Otherwise, status must be "pending_review".
 8. Return ONLY valid JSON matching the provided schema.
 
 Retrieved Context:
@@ -66,7 +66,7 @@ Customer Email:
 
     try:
         response = client.models.generate_content(
-            model="gemini-3.5-flash",  # Replace if your team uses a different working model
+            model="gemini-1.5-flash", 
             contents=prompt,
             config=types.GenerateContentConfig(
                 temperature=0.2,
@@ -76,11 +76,17 @@ Customer Email:
         )
 
         result = json.loads(response.text)
+        score = int(result["confidence_score"])
+        raw_status = result["status"].strip()
+
+        # Safety mapping
+        if raw_status not in ("approved", "pending_review"):
+            raw_status = "approved" if score >= 7 else "pending_review"
 
         return {
-            "confidence_score": int(result["confidence_score"]),
+            "confidence_score": score,
             "draft_reply": result["draft_reply"],
-            "status": result["status"],
+            "status": raw_status,
             "retrieved_context": retrieved_context,
         }
 
@@ -90,6 +96,6 @@ Customer Email:
         return {
             "confidence_score": 0,
             "draft_reply": "Unable to generate a response.",
-            "status": "needs_review",
+            "status": "pending_review",
             "retrieved_context": retrieved_context,
         }
