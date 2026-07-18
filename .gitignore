@@ -1,0 +1,13 @@
+# Ignore python virtual environment
+.venv/
+venv/
+ENV/
+
+# Ignore python cache files
+__pycache__/
+*.pyc
+
+# Ignore environment variables / secrets
+.env
+credentials.json
+token.json
