@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 __pycache__/
 *.pyc
 .venv/
@@ -19,3 +20,18 @@ __pycache__/
 # VS Code
 .vscode/
 >>>>>>> origin/feat-ai
+=======
+# Ignore python virtual environment
+.venv/
+venv/
+ENV/
+
+# Ignore python cache files
+__pycache__/
+*.pyc
+
+# Ignore environment variables / secrets
+.env
+credentials.json
+token.json
+>>>>>>> origin/feat-email
