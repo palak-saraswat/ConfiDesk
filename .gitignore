@@ -1,44 +1,9 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-__pycache__/
-*.pyc
-.venv/
 .env
-credentials.json
 token.json
-=======
-# Virtual environment
-.venv/
-
-# Environment variables
-.env
-
-# Python cache
+credentials.json
 __pycache__/
 *.pyc
-
-# VS Code
+*.pyo
+*.pyd
 .vscode/
->>>>>>> origin/feat-ai
-=======
-# Ignore python virtual environment
-.venv/
-venv/
-ENV/
-
-# Ignore python cache files
-__pycache__/
-*.pyc
-
-# Ignore environment variables / secrets
-.env
-credentials.json
-token.json
->>>>>>> origin/feat-email
-=======
-.env 
-__pycache__/ 
-*.pyc 
-.vscode/ 
->>>>>>> origin/feat-whatsapp
+.idea/
