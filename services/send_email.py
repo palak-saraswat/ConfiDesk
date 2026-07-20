@@ -13,6 +13,7 @@ load_dotenv()
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.compose",
     "https://www.googleapis.com/auth/gmail.send",
+    "https://www.googleapis.com/auth/gmail.modify",
 ]
 
 TOKEN_FILE = "token.json"
@@ -44,15 +45,15 @@ def _create_message(recipient: str, subject: str, body: str) -> dict:
 
 
 def send_email_draft(customer_email: str, draft_reply: str) -> bool:
-    """
-    Create a Gmail draft addressed to the customer.
-    The draft is not sent – it sits in the Drafts folder for human review.
-    """
+    """Create a Gmail draft addressed to the customer (not sent)."""
     subject = "Re: Your inquiry to ConfiDesk"
     try:
         service = _get_gmail_service()
         draft_body = _create_message(customer_email, subject, draft_reply)
-        service.users().drafts().create(userId="me", body={"message": draft_body}).execute()
+        service.users().drafts().create(
+            userId="me",
+            body={"message": draft_body}
+        ).execute()
         print(f"[send_email] Draft created for {customer_email}")
         return True
     except Exception as e:
@@ -61,14 +62,14 @@ def send_email_draft(customer_email: str, draft_reply: str) -> bool:
 
 
 def send_email(recipient: str, subject: str, body: str) -> bool:
-    """
-    Sends an email immediately via Gmail.
-    Used when the human clicks “Approve and send” in the UI.
-    """
+    """Send an email immediately via Gmail."""
     try:
         service = _get_gmail_service()
         message = _create_message(recipient, subject, body)
-        service.users().messages().send(userId="me", body=message).execute()
+        service.users().messages().send(
+            userId="me",
+            body=message
+        ).execute()
         print(f"[send_email] Email sent to {recipient}")
         return True
     except Exception as e:
@@ -76,7 +77,78 @@ def send_email(recipient: str, subject: str, body: str) -> bool:
         return False
 
 
-# Quick test (optional)
-if __name__ == "__main__":
-    send_email_draft("test@example.com", "This is a draft reply.")
-    send_email("test@example.com", "Test subject", "This is a real sent email.")
+def fetch_unread_emails(max_results: int = 20) -> list:
+    """
+    Return a list of unread emails from the Gmail inbox.
+    Each dict: id, sender, subject, body (plain text).
+    """
+    try:
+        service = _get_gmail_service()
+        results = service.users().messages().list(
+            userId="me",
+            labelIds=["INBOX"],
+            q="is:unread",
+            maxResults=max_results
+        ).execute()
+
+        messages = results.get("messages", [])
+        emails = []
+
+        for msg in messages:
+            msg_data = service.users().messages().get(
+                userId="me", id=msg["id"], format="full"
+            ).execute()
+
+            headers = msg_data["payload"]["headers"]
+            subject = next(
+                (h["value"] for h in headers if h["name"].lower() == "subject"),
+                "No Subject"
+            )
+            sender = next(
+                (h["value"] for h in headers if h["name"].lower() == "from"),
+                "Unknown"
+            )
+
+            body = ""
+            payload = msg_data["payload"]
+            if "parts" in payload:
+                for part in payload["parts"]:
+                    if part["mimeType"] == "text/plain":
+                        if "data" in part["body"]:
+                            body = base64.urlsafe_b64decode(
+                                part["body"]["data"]
+                            ).decode()
+                        break
+            else:
+                if "data" in payload["body"]:
+                    body = base64.urlsafe_b64decode(
+                        payload["body"]["data"]
+                    ).decode()
+
+            emails.append({
+                "id": msg["id"],
+                "sender": sender,
+                "subject": subject,
+                "body": body.strip(),
+            })
+
+        return emails
+
+    except Exception as e:
+        print(f"[send_email] Failed to fetch emails: {e}")
+        return []
+
+
+def mark_as_read(message_id: str) -> bool:
+    """Remove the UNREAD label from a Gmail message."""
+    try:
+        service = _get_gmail_service()
+        service.users().messages().modify(
+            userId="me",
+            id=message_id,
+            body={"removeLabelIds": ["UNREAD"]}
+        ).execute()
+        return True
+    except Exception as e:
+        print(f"[send_email] Failed to mark as read: {e}")
+        return False
