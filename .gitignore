@@ -1,6 +1,21 @@
+<<<<<<< HEAD
 __pycache__/
 *.pyc
 .venv/
 .env
 credentials.json
 token.json
+=======
+# Virtual environment
+.venv/
+
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+>>>>>>> origin/feat-ai

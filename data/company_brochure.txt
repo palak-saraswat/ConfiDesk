@@ -1,0 +1,172 @@
+=================================================
+XYZ Company Pvt. Ltd.
+Official Company Knowledge Base
+=================================================
+
+Company Overview
+----------------
+XYZ Company Pvt. Ltd. is a technology company that provides software development, AI-powered solutions, cloud services, business automation, and IT consulting to businesses of all sizes.
+
+Our mission is to deliver reliable, innovative, and customer-focused technology solutions while ensuring excellent customer support.
+
+Business Hours
+--------------
+Monday to Friday: 9:00 AM – 6:00 PM IST
+
+Saturday: 10:00 AM – 2:00 PM IST
+
+Sunday: Closed
+
+Customer Support
+----------------
+Email: support@xyzcompany.com
+
+Phone: +91-9876543210
+
+Average response time:
+Within 24 business hours.
+
+Services Offered
+----------------
+• Web Application Development
+
+• Mobile Application Development
+
+• Artificial Intelligence Solutions
+
+• Agentic AI Development
+
+• AI Chatbot Development
+
+• Cloud Deployment
+
+• API Development
+
+• Business Process Automation
+
+• Software Consulting
+
+Payment Policy
+--------------
+• 50% advance payment before project initiation.
+
+• Remaining 50% after successful project completion.
+
+Accepted payment methods:
+- Bank Transfer
+- UPI
+- Credit Card
+
+Refund Policy
+-------------
+Customers may request a refund within 30 calendar days of payment provided project development has not started.
+
+Refund requests made after development has started will be evaluated individually.
+
+Completed projects are non-refundable.
+
+Project Cancellation
+--------------------
+Customers may cancel their project before development begins.
+
+If development has already started, cancellation charges will depend on the work completed.
+
+Technical Support
+-----------------
+Every completed project includes 90 days of complimentary technical support.
+
+Support includes:
+- Bug fixes
+- Minor software updates
+- Deployment assistance
+
+New feature requests are treated as separate development work.
+
+Maintenance Plans
+-----------------
+Basic Plan
+- Email support
+- Monthly maintenance
+
+Professional Plan
+- Priority support
+- Weekly monitoring
+- Performance optimization
+
+Enterprise Plan
+- Dedicated support engineer
+- 24×7 monitoring
+- SLA-based support
+
+Response Time
+-------------
+Basic Plan:
+Within 24 business hours.
+
+Professional Plan:
+Within 8 business hours.
+
+Enterprise Plan:
+Within 2 business hours.
+
+Security
+--------
+XYZ Company follows industry-standard security practices including:
+
+• Data encryption
+
+• Secure cloud infrastructure
+
+• Role-based access control
+
+• Regular security audits
+
+Privacy Policy
+--------------
+Customer information is used only to provide requested services.
+
+Customer data is never shared with third parties without permission unless required by law.
+
+Data Retention
+--------------
+Customer records are securely retained for one year after project completion.
+
+Frequently Asked Questions
+--------------------------
+
+Q. Do you build mobile applications?
+
+A. Yes. We develop Android, iOS, and cross-platform mobile applications.
+
+Q. Do you build websites?
+
+A. Yes. We provide responsive and scalable web application development.
+
+Q. Do you develop AI solutions?
+
+A. Yes. AI development and Agentic AI systems are among our primary services.
+
+Q. Do you provide cloud deployment?
+
+A. Yes. We support AWS, Microsoft Azure, and Google Cloud Platform.
+
+Q. What are your business hours?
+
+A. Monday to Friday from 9:00 AM to 6:00 PM IST.
+
+Q. Can I request a refund after 30 days?
+
+A. Refunds are generally available only within 30 days before project development begins.
+
+Q. How long is free technical support available?
+
+A. Every completed project includes 90 days of complimentary technical support.
+
+Important Instructions for AI Assistant
+---------------------------------------
+
+The AI assistant must answer customer queries ONLY using the information provided in this knowledge base.
+
+If sufficient information is not available, the AI must not guess or fabricate an answer.
+
+Instead, it should assign a confidence score below 7 and mark the request for human review.
