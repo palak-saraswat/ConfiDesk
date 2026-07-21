@@ -37,7 +37,7 @@ if "processed" not in st.session_state:
 with st.sidebar:
     st.markdown("### ConfiDesk")
     st.caption("Customer email agent")
-    st.caption("👤 Orchestrator: Palak | Team ConfiDesk")  # optional credit
+    st.caption("Team ConfiDesk")  # optional credit
 
     st.markdown("**Connections**")
     st.write("📧 Gmail — :green[Connected]")

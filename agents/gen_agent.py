@@ -1,5 +1,4 @@
 import json
-
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -15,7 +14,7 @@ client = genai.Client()
 class SupportAgentResponse(BaseModel):
     confidence_score: int = Field(
         ...,
-        description="Confidence score from 1 to 10."
+        description="Confidence score from 1 to 10 based strictly on whether the answer is found in the provided company brochure context."
     )
 
     draft_reply: str = Field(
@@ -66,7 +65,7 @@ Customer Email:
 
     try:
         response = client.models.generate_content(
-            model="models/gemini-flash-latest", 
+            model="models/gemini-2.5-flash-lite", 
             contents=prompt,
             config=types.GenerateContentConfig(
                 temperature=0.2,
