@@ -39,7 +39,7 @@ H --> I[Support Team Reviews Manually]
 |  **Palak Saraswat**    | Orchestrator & LangGraph Architect | Workflow graph (`graph_builder`, `state`, `nodes`) |
 |  **Soha**              | AI/ML Engineer                     | Gemini RAG agent, retriever, knowledge base        |
 |  **Shruti**            | Backend Developer – Email          | Gmail API (draft, send, inbox fetch)               |
-|  **Vivanshi**          | Backend Developer – Notifications  | WhatsApp escalation via Make.com                   |
+|  **Viyanshi Chaudhary**| Backend Developer – Notifications  | WhatsApp escalation via Make.com                   |
 |  **Anushka Shrotriya** | UI/UX Developer                    | Streamlit dashboard                                |
 
 
@@ -60,6 +60,6 @@ streamlit run app.py
 
 ## Built with ❤️ by Team ConfiDesk
 
-**Palak Saraswat**   • **Soha**   • **Shruti**   • **Vivanshi**   • **Anushka Shrotriya**
+**Palak Saraswat**   • **Soha**   • **Shruti**   • **Viyanshi Chaudhary**   • **Anushka Shrotriya**
 
 ---
