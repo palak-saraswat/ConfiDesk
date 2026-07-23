@@ -48,14 +48,34 @@ H --> I[Support Team Reviews Manually]
 ## Quick Start (Local)
 
 ```
-git clone <repo-url> && cd ConfiDesk
+1)Clone the repository and switch to dev branch
+bash
+git clone <repo-url>
+cd ConfiDesk
 git checkout dev
-pip install -r requirements.txt
-cp .env.example .env
-# Add credentials.json from Google Cloud (Gmail API)
-streamlit run app.py
-```
 
+2)Install dependencies
+bash
+pip install -r requirements.txt
+
+3)Prepare environment variables
+a. Copy the file .env.example to a new file named .env.
+(Right‑click → Copy/Paste, or use your file manager)
+b. Open .env and fill in your own values:
+c. GOOGLE_API_KEY – your Gemini API key from Google AI Studio.
+d. MAKE_WEBHOOK_URL – the webhook URL from Make.com (for WhatsApp alerts).
+
+4)Gmail OAuth Setup
+a. Obtain a credentials.json file from the Google Cloud Console (Desktop app, Gmail API scopes: compose, send, modify).
+b. Place the file in the project root (same folder as app.py).
+Important: Never commit credentials.json or the generated token.json – they are already in .gitignore.
+
+5)Launch the app
+bash
+streamlit run app.py
+The first run will open a browser window for Google login. After authorisation, a token.json file is created automatically, and the dashboard displays unread emails from the authenticated Gmail account.
+
+```
 ---
 
 ## Built with ❤️ by Team ConfiDesk
