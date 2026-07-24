@@ -17,16 +17,11 @@ def ai_agent_node(state: AgentState) -> dict:
         # If the AI agent fails, treat it as low confidence and escalate
         print(f"Gemini agent failed: {e}")
         return {
-            "confidence_score": 0,
-            "draft_reply": "",
-            "status": "pending_review",
+            "confidence_score": agent_output.get("confidence_score", 0),
+            "draft_reply": agent_output.get("draft_reply", ""),
+            "status": agent_output.get("status", "pending_review"),
+            "retrieved_context": agent_output.get("retrieved_context", ""),
         }
-
-    return {
-        "confidence_score": agent_output.get("confidence_score", 0),
-        "draft_reply": agent_output.get("draft_reply", ""),
-        "status": agent_output.get("status", "pending_review"),
-    }
 
 
 def send_whatsapp_node(state: AgentState) -> dict:

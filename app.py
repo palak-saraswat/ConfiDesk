@@ -88,27 +88,29 @@ with tab_queue:
                             full_text = f"Subject: {email['subject']}\n\n{email['body']}"
                             initial_state = {"customer_email": full_text}
 
-                            # Run the AI + routing graph
-                            final_state = graph.invoke(initial_state)
+                            try:
+                                # Run the AI + routing graph
+                                final_state = graph.invoke(initial_state)
 
-                            # Build the processed record
-                            result = {
-                                "id": email["id"],
-                                "sender": email["sender"],
-                                "subject": email["subject"],
-                                "confidence": final_state.get("confidence_score", 0),
-                                "draft": final_state.get("draft_reply", ""),
-                                "status": final_state.get("status", "escalated"),
-                            }
+                                # Build the processed record
+                                result = {
+                                    "id": email["id"],
+                                    "sender": email["sender"],
+                                    "subject": email["subject"],
+                                    "confidence": final_state.get("confidence_score", 0),
+                                    "draft": final_state.get("draft_reply", ""),
+                                    "status": final_state.get("status", "escalated"),
+                                }
 
-                        # Mark original email as read in Gmail
-                        mark_as_read(email["id"])
+                                # Only mark as read and save if successful
+                                mark_as_read(email["id"])
+                                st.session_state.processed.append(result)
+                                save_processed(st.session_state.processed)
+                                st.success("Email processed successfully!")
+                            except Exception as e:
+                                st.error(f"Processing failed: {e}")
 
-                        # Persist the result
-                        st.session_state.processed.append(result)
-                        save_processed(st.session_state.processed)
-
-                        st.rerun()
+                            st.rerun()
 
 # ---------------------------------------------------------------------------
 # REVIEW DRAFTS – items that need human approval (status = pending_review)

@@ -65,7 +65,7 @@ Customer Email:
 
     try:
         response = client.models.generate_content(
-            model="models/gemini-2.5-flash-lite", 
+            model="models/gemini-1.5-flash",
             contents=prompt,
             config=types.GenerateContentConfig(
                 temperature=0.2,
