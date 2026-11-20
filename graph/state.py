@@ -5,6 +5,11 @@ class AgentState(TypedDict):
     customer_email: str
     email_text: str
 
+    # added: used to address and track the Gmail draft
+    sender: str
+    subject: str
+    draft_id: str
+
     intent: str
     extracted_query: str
     retrieved_context: str

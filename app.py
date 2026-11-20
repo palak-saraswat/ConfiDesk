@@ -7,8 +7,13 @@ import streamlit as st
 import json
 from pathlib import Path
 
-from graph_builder import graph                                
-from services.send_email import send_email, fetch_unread_emails, mark_as_read
+from graph_builder import graph
+from services.send_email import (
+    send_email,
+    send_existing_draft,
+    fetch_unread_emails,
+    mark_as_read,
+)
 
 st.set_page_config(page_title="ConfiDesk", page_icon="📨", layout="wide")
 
@@ -37,7 +42,7 @@ if "processed" not in st.session_state:
 with st.sidebar:
     st.markdown("### ConfiDesk")
     st.caption("Customer email agent")
-    st.caption("Team ConfiDesk")  # optional credit
+    st.caption("Team ConfiDesk")
 
     st.markdown("**Connections**")
     st.write("📧 Gmail — :green[Connected]")
@@ -86,7 +91,11 @@ with tab_queue:
                     if st.button("Process", key=f"process_{email['id']}", use_container_width=True):
                         with st.spinner("Read → RAG → Generate → Route..."):
                             full_text = f"Subject: {email['subject']}\n\n{email['body']}"
-                            initial_state = {"customer_email": full_text}
+                            initial_state = {
+                                "customer_email": full_text,
+                                "sender": email["sender"],
+                                "subject": email["subject"],
+                            }
 
                             try:
                                 # Run the AI + routing graph
@@ -100,6 +109,7 @@ with tab_queue:
                                     "confidence": final_state.get("confidence_score", 0),
                                     "draft": final_state.get("draft_reply", ""),
                                     "status": final_state.get("status", "escalated"),
+                                    "draft_id": final_state.get("draft_id", ""),
                                 }
 
                                 # Only mark as read and save if successful
@@ -128,7 +138,11 @@ with tab_review:
             c1, c2 = st.columns(2)
             with c1:
                 if st.button("Approve and send", key=f"send_{r['id']}", use_container_width=True):
-                    if send_email(r["sender"], r["subject"], edited):
+                    if r.get("draft_id"):
+                        ok = send_existing_draft(r["draft_id"], r["sender"], r["subject"], edited)
+                    else:
+                        ok = send_email(r["sender"], r["subject"], edited)
+                    if ok:
                         r["status"] = "sent"
                         r["draft"] = edited
                         save_processed(st.session_state.processed)

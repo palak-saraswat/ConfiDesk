@@ -27,6 +27,8 @@ def _get_gmail_service():
         creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
     if creds and creds.expired and creds.refresh_token:
         creds.refresh(Request())
+        with open(TOKEN_FILE, "w") as token:
+            token.write(creds.to_json())
     elif not creds or not creds.valid:
         flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_FILE, SCOPES)
         creds = flow.run_local_server(port=0)
@@ -44,20 +46,42 @@ def _create_message(recipient: str, subject: str, body: str) -> dict:
     return {"raw": raw}
 
 
-def send_email_draft(customer_email: str, draft_reply: str) -> bool:
-    """Create a Gmail draft addressed to the customer (not sent)."""
-    subject = "Re: Your inquiry to ConfiDesk"
+def send_email_draft(customer_email: str, draft_reply: str, subject: str = "") -> str | None:
+    """Create a Gmail draft (not sent). Returns the Gmail draft id, or None on failure."""
+    subject = f"Re: {subject}" if subject else "Re: Your inquiry to ConfiDesk"
     try:
         service = _get_gmail_service()
         draft_body = _create_message(customer_email, subject, draft_reply)
-        service.users().drafts().create(
+        draft = service.users().drafts().create(
             userId="me",
             body={"message": draft_body}
         ).execute()
-        print(f"[send_email] Draft created for {customer_email}")
-        return True
+        print(f"[send_email] Draft created for {customer_email}, id={draft['id']}")
+        return draft["id"]
     except Exception as e:
         print(f"[send_email] Failed to create draft: {e}")
+        return None
+
+
+def send_existing_draft(draft_id: str, recipient: str, subject: str, body: str) -> bool:
+    """Update an existing Gmail draft with the reviewed text, then send it."""
+    subject = subject if subject.lower().startswith("re:") else f"Re: {subject}"
+    try:
+        service = _get_gmail_service()
+        message = _create_message(recipient, subject, body)
+        service.users().drafts().update(
+            userId="me",
+            id=draft_id,
+            body={"message": message}
+        ).execute()
+        service.users().drafts().send(
+            userId="me",
+            body={"id": draft_id}
+        ).execute()
+        print(f"[send_email] Draft {draft_id} sent to {recipient}")
+        return True
+    except Exception as e:
+        print(f"[send_email] Failed to send draft: {e}")
         return False
 
 
